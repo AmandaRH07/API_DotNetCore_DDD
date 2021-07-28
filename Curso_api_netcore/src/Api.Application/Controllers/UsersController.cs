@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Api.Domain.Entities;
 using Api.Domain.Interface.Services.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Application.Controllers
@@ -17,9 +18,10 @@ namespace Api.Application.Controllers
         {
             _service = service;
         }
-        // método para selecionar todos os registros no banco
-        [HttpGet]
 
+        // método para selecionar todos os registros no banco
+        [Authorize("Bearer")]
+        [HttpGet]
         public async Task<ActionResult> GetAll()
         {
             if (!ModelState.IsValid)
@@ -37,6 +39,7 @@ namespace Api.Application.Controllers
         }
 
         // http://localhost:5000/api/users/12334345435
+        [Authorize("Bearer")]
         [HttpGet]
         [Route("{id}", Name = "GetWithId")]
         public async Task<ActionResult> Get(Guid id)
@@ -55,6 +58,7 @@ namespace Api.Application.Controllers
             }
         }
 
+        [Authorize("Bearer")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] UserEntity user)
         {
@@ -80,7 +84,7 @@ namespace Api.Application.Controllers
             }
         }
 
-
+        [Authorize("Bearer")]
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] UserEntity user)
         {
@@ -106,6 +110,7 @@ namespace Api.Application.Controllers
             }
         }
 
+        [Authorize("Bearer")]
         [HttpDelete ("{id}")]
         public async Task<ActionResult> Delete( Guid id)
         {

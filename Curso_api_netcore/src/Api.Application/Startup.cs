@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Api.CrossCutting.DependencyInjection;
 using Api.Domain.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,14 +36,35 @@ namespace application
                     Version = "v1",
                     Description = "Arquitetura DDD",
                     TermsOfService = new Uri("http://netCoreDDD.com.br"),
-                    Contact = new OpenApiContact {
+                    Contact = new OpenApiContact
+                    {
                         Name = "Amanda Hass",
                         Email = "amanda@mail.com",
-                        Url = new Uri("http://netCoreDDD.com.br") 
+                        Url = new Uri("http://netCoreDDD.com.br")
                     },
-                    License = new OpenApiLicense {
+                    License = new OpenApiLicense
+                    {
                         Name = "Termos de Licença de Uso",
-                        Url = new Uri("http://netCoreDDD.com.br") 
+                        Url = new Uri("http://netCoreDDD.com.br")
+                    }
+                });
+                
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "Entre com o Token JWT",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme {
+                            Reference = new OpenApiReference {
+                                Id = "Bearer",
+                                Type = ReferenceType.SecurityScheme
+                            }
+                        }, new List<string>()
                     }
                 });
             });
@@ -55,7 +79,29 @@ namespace application
             new ConfigureFromConfigurationOptions<TokenConfigurations>(
                 Configuration.GetSection("TokenConfigurations"))
                     .Configure(tokenConfigurations);
-                services.AddSingleton(tokenConfigurations);
+            services.AddSingleton(tokenConfigurations);
+
+            services.AddAuthentication(authOptions =>
+            {
+                authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(bearerOptions =>
+            {
+                var paramsValidation = bearerOptions.TokenValidationParameters;
+                paramsValidation.IssuerSigningKey = signingConfigurations.Key;
+                paramsValidation.ValidAudience = tokenConfigurations.Audience;
+                paramsValidation.ValidIssuer = tokenConfigurations.Issuer;
+                paramsValidation.ValidateIssuerSigningKey = true;
+                paramsValidation.ValidateLifetime = true;
+                paramsValidation.ClockSkew = TimeSpan.Zero;
+            });
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
