@@ -36,6 +36,11 @@ namespace Api.Data.Repository
            }
         }
 
+        
+        public async Task<bool> ExistsAsync(Guid id)
+        {
+            return await _dataset.AnyAsync(p => p.Id.Equals(id));
+        }
         public async Task<T> InsertAsync(T item)
         {
            try{
@@ -92,10 +97,6 @@ namespace Api.Data.Repository
            return item;
         }
 
-        public async Task<bool> ExistsAsync(Guid id)
-        {
-            return await _dataset.AnyAsync(p => p.Id.Equals(id));
-        }
 
         
     }

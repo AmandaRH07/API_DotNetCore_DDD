@@ -17,8 +17,8 @@ namespace Api.Service.Services
 
         public UserService(IRepository<UserEntity> repository, IMapper mapper)
         {
-           _repository = repository;
-           _mapper = mapper;
+            _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<bool> Delete(Guid id)
@@ -28,34 +28,32 @@ namespace Api.Service.Services
 
         public async Task<UserDto> Get(Guid id)
         {
-           var entity = await _repository.SelectAsync(id);
-           return _mapper.Map<UserDto> (entity);
+            var entity = await _repository.SelectAsync(id);
+            return _mapper.Map<UserDto>(entity) ??  new UserDto();
         }
 
         public async Task<IEnumerable<UserDto>> GetAll()
         {
             var listEntity = await _repository.SelectAsync();
-            return _mapper.Map<IEnumerable<UserDto>>(listEntity);;
+            return _mapper.Map<IEnumerable<UserDto>>(listEntity); ;
         }
 
-        public async Task<UserDtoCreateResult> Post(UserDto user)
+        public async Task<UserDtoCreateResult> Post(UserDtoCreate user)
         {
-            var model =  _mapper.Map<UserModel>(user);
+            var model = _mapper.Map<UserModel>(user);
             var entity = _mapper.Map<UserEntity>(model);
             var result = await _repository.InsertAsync(entity);
-            
+
             return _mapper.Map<UserDtoCreateResult>(result);
         }
 
-        public async Task<UserDtoUpdateResult> Put(UserDto user)
+        public async Task<UserDtoUpdateResult> Put(UserDtoUpdate user)
         {
-            var model =  _mapper.Map<UserModel>(user);
+            var model = _mapper.Map<UserModel>(user);
             var entity = _mapper.Map<UserEntity>(model);
-            var result = await _repository.InsertAsync(entity);
-            
+
+            var result = await _repository.UpdateAsync(entity);
             return _mapper.Map<UserDtoUpdateResult>(result);
         }
-    
-       
     }
 }
