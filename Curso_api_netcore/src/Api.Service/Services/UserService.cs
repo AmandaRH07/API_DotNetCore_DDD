@@ -10,7 +10,7 @@ using AutoMapper;
 
 namespace Api.Service.Services
 {
-    public class UserService : IUserService
+     public class UserService : IUserService
     {
         private IRepository<UserEntity> _repository;
         private readonly IMapper _mapper;
@@ -29,13 +29,13 @@ namespace Api.Service.Services
         public async Task<UserDto> Get(Guid id)
         {
             var entity = await _repository.SelectAsync(id);
-            return _mapper.Map<UserDto>(entity) ??  new UserDto();
+            return _mapper.Map<UserDto>(entity) ?? new UserDto();
         }
 
         public async Task<IEnumerable<UserDto>> GetAll()
         {
             var listEntity = await _repository.SelectAsync();
-            return _mapper.Map<IEnumerable<UserDto>>(listEntity); ;
+            return _mapper.Map<IEnumerable<UserDto>>(listEntity);
         }
 
         public async Task<UserDtoCreateResult> Post(UserDtoCreate user)
