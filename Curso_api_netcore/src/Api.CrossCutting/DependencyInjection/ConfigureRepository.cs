@@ -1,3 +1,4 @@
+using System;
 using Api.Data.Context;
 using Api.Data.Implamentations;
 using Api.Data.Repository;
@@ -15,9 +16,12 @@ namespace Api.CrossCutting.DependencyInjection
             serviceCollection.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             serviceCollection.AddScoped<IUserRepository, UserImplementation>();
 
-            serviceCollection.AddDbContext<MyContext>(
-                options => options.UseSqlServer("Server= nome\\SQLEXPRESS;;Database=dbnetcoreapi;Trusted_Connection=True")
-            );
+             if (Environment.GetEnvironmentVariable("DATABASE").ToLower() == "SQLSERVER".ToLower())
+            {
+                serviceCollection.AddDbContext<MyContext>(
+                    options => options.UseSqlServer(Environment.GetEnvironmentVariable("DB_CONNECTION"))
+                );
+            }
         }
     }
 }

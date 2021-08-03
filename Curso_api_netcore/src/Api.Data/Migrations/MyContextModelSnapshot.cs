@@ -53,7 +53,7 @@ namespace Data.Migrations
                         {
                             Id = new Guid("9ddc1f71-6259-4d99-a003-18a37452bb8e"),
                             CreateAt = new DateTime(2021, 8, 3, 11, 48, 54, 172, DateTimeKind.Local).AddTicks(6991),
-                            Email = "user@exemple.com",
+                            Email = "user@example.com",
                             Name = "Administrador",
                             UpdateAt = new DateTime(2021, 8, 3, 11, 48, 54, 174, DateTimeKind.Local).AddTicks(5786)
                         });
