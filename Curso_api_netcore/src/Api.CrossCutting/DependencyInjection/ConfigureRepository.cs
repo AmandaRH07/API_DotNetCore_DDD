@@ -16,7 +16,7 @@ namespace Api.CrossCutting.DependencyInjection
             serviceCollection.AddScoped<IUserRepository, UserImplementation>();
 
             serviceCollection.AddDbContext<MyContext>(
-                options => options.UseMySql("Server=localhost;Port=3306;Database=dbNetCoreAPI;Uid=root;Pwd=sa@1234")
+                options => options.UseSqlServer("Server= nome\\SQLEXPRESS;;Database=dbnetcoreapi;Trusted_Connection=True")
             );
         }
     }
