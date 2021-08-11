@@ -25,14 +25,14 @@ namespace Api.Data.Test
             {
                 UserImplementation _repositorio = new UserImplementation(context);
                 UserEntity _entity = new UserEntity(){
-                    Email = "teste@mail.com",
-                    Name = "teste"
+                    Email = Faker.Internet.Email(),
+                    Name = Faker.Name.FullName()
                 };
 
                 var _registroCriado = await _repositorio.InsertAsync(_entity);
                 Assert.NotNull(_registroCriado);
-                Assert.Equal("teste@mail.com", _registroCriado.Email);
-                Assert.Equal("teste", _registroCriado.Name);
+                Assert.Equal(_entity.Email, _registroCriado.Email);
+                Assert.Equal(_entity.Name, _registroCriado.Name);
                 Assert.False(_registroCriado.Id == Guid.Empty);
             }
         }
