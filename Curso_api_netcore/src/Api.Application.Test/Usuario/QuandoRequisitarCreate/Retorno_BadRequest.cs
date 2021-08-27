@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Api.Application.Test.Usuario.QuandoRequisitarCreate
 {
-    public class Retorno_Created
+    public class Retorno_BadRequest
     {
         private UsersController _controller;
 
@@ -32,6 +32,8 @@ namespace Api.Application.Test.Usuario.QuandoRequisitarCreate
             );
 
             _controller = new UsersController(serviceMock.Object);
+            // gerando um problema
+            _controller.ModelState.AddModelError("Name", "É um campo obrigatório");
 
             Mock<IUrlHelper> url = new Mock<IUrlHelper>();
             url.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns("localhost:5000");
@@ -44,12 +46,7 @@ namespace Api.Application.Test.Usuario.QuandoRequisitarCreate
             };
 
             var result = await _controller.Post(userDtoCrate);
-            Assert.True(result is CreatedResult);
-
-            var resultValue = ((CreatedResult)result).Value as UserDtoCreateResult;
-            Assert.NotNull(resultValue);
-            Assert.Equal(userDtoCrate.Name, resultValue.Name);
-            Assert.Equal(userDtoCrate.Email, resultValue.Email);
+            Assert.True(result is BadRequestObjectResult);
         }
     }
 }
