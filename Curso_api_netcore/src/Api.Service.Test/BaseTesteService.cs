@@ -10,7 +10,7 @@ namespace Api.Service.Test
         public IMapper Mapper { get; set; }
         public BaseTesteService()
         {
-
+            Mapper = new AutoMapperFixture().GetMapper();
         }
 
         public class AutoMapperFixture : IDisposable
