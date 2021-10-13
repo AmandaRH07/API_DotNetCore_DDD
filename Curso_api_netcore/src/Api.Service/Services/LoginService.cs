@@ -96,12 +96,12 @@ namespace Api.Service.Services
             return new
             {
                 authenticated = true,
-                createDate = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                expirationDate = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                acessToken = token,
+                create = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                accessToken = token,
                 userName = user.Email,
-                name= user.Name,
-                message = "Usuário Logado"
+                name = user.Name,
+                message = "Usuário Logado com sucesso"
             };
         }
     }

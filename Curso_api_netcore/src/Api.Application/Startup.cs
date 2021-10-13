@@ -20,16 +20,26 @@ namespace application
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        public IWebHostEnvironment _environment { get; }
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            _environment = environment;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            if (_environment.IsEnvironment("Testing"))
+            {
+                Environment.SetEnvironmentVariable("DB_CONNECTION", "Server= NT-04611\\SQLEXPRESS;Database=dbnetcoreapi;Trusted_Connection=True");
+                Environment.SetEnvironmentVariable("DATABASE", "SqlServer");
+                Environment.SetEnvironmentVariable("MIGRATION", "APLICAR");
+                Environment.SetEnvironmentVariable("Audience", "ExemploAudience");
+                Environment.SetEnvironmentVariable("Issuer", "ExemploIssue");
+                Environment.SetEnvironmentVariable("Seconds", "28800");
+            }
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -76,7 +86,7 @@ namespace application
             ConfigureService.ConfigureDependenciesService(services);
             ConfigureRepository.ConfigureDependenciesRepository(services);
 
-            var config = new AutoMapper.MapperConfiguration(cfg =>
+            var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new DtoToModelProfile());
                 cfg.AddProfile(new EntityToDtoProfile());
@@ -89,10 +99,13 @@ namespace application
             var signingConfigurations = new SigningConfigurations();
             services.AddSingleton(signingConfigurations);
 
+            services.AddDbContext<DbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApiConnection")));
+
             var tokenConfigurations = new TokenConfigurations();
             new ConfigureFromConfigurationOptions<TokenConfigurations>(
                 Configuration.GetSection("TokenConfigurations"))
                     .Configure(tokenConfigurations);
+
             services.AddSingleton(tokenConfigurations);
 
             services.AddAuthentication(authOptions =>
@@ -118,7 +131,6 @@ namespace application
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -143,17 +155,15 @@ namespace application
                 endpoints.MapControllers();
             });
 
-            if (Environment.GetEnvironmentVariable("MIGRATION").ToLower() == "APLICAR".ToLower())
+            using (var service = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
+                                                        .CreateScope())
             {
-                using (var service = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-                                                            .CreateScope())
+                using (var context = service.ServiceProvider.GetService<MyContext>())
                 {
-                    using (var context = service.ServiceProvider.GetService<MyContext>())
-                    {
-                        context.Database.Migrate();
-                    }
+                    context.Database.Migrate();
                 }
             }
+
         }
     }
 }

@@ -57,10 +57,10 @@ namespace Api.Data.Test
                 var _removeu = await _repositorio.DeleteAsync(_registroSelecionado.Id);
                 Assert.True(_removeu);
 
-                var _usuarioPadrao = await _repositorio.FindByLogin("user@exemple.com");
+                var _usuarioPadrao = await _repositorio.FindByLogin("user@example.com");
                 Assert.NotNull(_usuarioPadrao);
-                Assert.Equal("user@exemple.com", _registroAtualizado.Email);
-                Assert.Equal("Administrador", _registroAtualizado.Name);
+                Assert.Equal("user@example.com", _usuarioPadrao.Email);
+                Assert.Equal("Administrador", _usuarioPadrao.Name);
             }
         }
     }
