@@ -1,4 +1,6 @@
-﻿namespace Domain.Models
+﻿using System;
+
+namespace Domain.Models
 {
     public class CepModel
     {
@@ -27,6 +29,15 @@
                 _numero = string.IsNullOrEmpty(value) ? "S/N" : value; 
             }
         }
+
+        private Guid _municipioId;
+
+        public Guid MunicipioId
+        {
+            get { return _municipioId; }
+            set { _municipioId = value; }
+        }
+
 
 
     }
