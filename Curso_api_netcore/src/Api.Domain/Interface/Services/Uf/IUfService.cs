@@ -8,7 +8,7 @@ namespace Domain.Interface.Services.Uf
 {
     public interface IUfService
     {
-        Task<UfDto> Get(Guid Id);
+        Task<UfDto> Get(Guid id);
         Task<IEnumerable<UfDto>> GetAll();
     }
 }
