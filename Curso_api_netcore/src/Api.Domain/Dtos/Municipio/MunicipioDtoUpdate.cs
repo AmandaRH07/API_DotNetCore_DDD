@@ -14,5 +14,8 @@ namespace Domain.Dtos.Municipio
 
         [Range(0, int.MaxValue, ErrorMessage = "Código do IBGE inválido")]
         public int CodIBGE { get; set; }
+
+        [Required(ErrorMessage = "Código de UF é campo Obrigatorio")]
+        public Guid UfId { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Domain.Models
 {
-    public class MunicipioModel
+    public class MunicipioModel : BaseModel
     {
         private string _nome;
 
