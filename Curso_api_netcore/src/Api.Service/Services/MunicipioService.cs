@@ -27,7 +27,7 @@ namespace Service.Services
             return _mapper.Map<MunicipioDto>(entity);
         }
 
-        public async Task<MunicipioDtoCompleto> GetCompleteBy(Guid id)
+        public async Task<MunicipioDtoCompleto> GetCompleteById(Guid id)
         {
             var entity = await _municipioRepository.GetCompleteById(id);
             return _mapper.Map<MunicipioDtoCompleto>(entity);
