@@ -21,7 +21,7 @@ namespace Api.Service.Test.Município
 
             var result = await _municipioService.Get(IdMunicipio);
             Assert.NotNull(result);
-            Assert.True(result.Id==IdMunicipio);
+            Assert.True(result.Id == IdMunicipio);
             Assert.Equal(NomeMunicipio, result.Nome);
             Assert.Equal(CodigoIBGEMunicipio, result.CodIBGE);
         }

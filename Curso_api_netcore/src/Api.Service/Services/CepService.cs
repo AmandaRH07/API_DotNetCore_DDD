@@ -5,8 +5,6 @@ using Domain.Interface.Services.Cep;
 using Domain.Models;
 using Domain.Repository;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Service.Services

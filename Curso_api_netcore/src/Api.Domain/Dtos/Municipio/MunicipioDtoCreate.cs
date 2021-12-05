@@ -1,5 +1,4 @@
-﻿using Domain.Dtos.Uf;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Dtos.Municipio

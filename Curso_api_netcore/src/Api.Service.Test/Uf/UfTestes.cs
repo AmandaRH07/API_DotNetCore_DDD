@@ -9,8 +9,11 @@ namespace Api.Service.Test.Uf
         public static string Nome { get; set; }
         public static string Sigla { get; set; }
         public static Guid IdUf { get; set; }
+
         public List<UfDto> listaUfDto = new List<UfDto>();
+
         public UfDto ufDto;
+
         public UfTestes()
         {
             IdUf = Guid.NewGuid();
