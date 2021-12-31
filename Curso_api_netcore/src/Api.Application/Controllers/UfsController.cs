@@ -1,9 +1,8 @@
-﻿using Domain.Interface.Services.Uf;
+﻿using Domain.Interface.Services;
+using Domain.Interface.Services.Uf;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -13,11 +12,18 @@ namespace application.Controllers
     [ApiController]
     public class UfsController : ControllerBase
     {
+        private IMunicipioService @object;
+
         public IUfService _service { get; set; }
 
         public UfsController(IUfService service)
         {
             _service = service;
+        }
+
+        public UfsController(IMunicipioService @object)
+        {
+            this.@object = @object;
         }
 
         [Authorize("Bearer")]
@@ -47,13 +53,16 @@ namespace application.Controllers
 
             try
             {
-                return Ok(await _service.Get(id));
+                var result = await _service.Get(id);
+                if (result == null)
+                    return NotFound();
+
+                return Ok(result);
             }
             catch (ArgumentException e)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
-
     }
 }
