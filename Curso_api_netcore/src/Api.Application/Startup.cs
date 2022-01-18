@@ -141,7 +141,7 @@ namespace application
             app.UseSwagger();
             app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "application v1");
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Curso DDD");
                     c.RoutePrefix = string.Empty;
                 }
             );

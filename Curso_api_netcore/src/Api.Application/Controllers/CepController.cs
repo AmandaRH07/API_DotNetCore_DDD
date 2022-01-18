@@ -1,11 +1,8 @@
 ﻿using Domain.Dtos.Cep;
 using Domain.Interface.Services.Cep;
-using Domain.Interface.Services.Uf;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 

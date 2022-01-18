@@ -61,7 +61,7 @@ namespace application.Controllers
 
         [Authorize("Bearer")]
         [HttpGet]
-        [Route("{idMunicipio}")]
+        [Route("CompleteById/{idMunicipio}")]
         public async Task<IActionResult> GetCompleteById(Guid idMunicipio)
         {
             if (!ModelState.IsValid)
@@ -84,7 +84,7 @@ namespace application.Controllers
 
         [Authorize("Bearer")]
         [HttpGet]
-        [Route("{codigoIBGE}")]
+        [Route("CompleteByIBGE/{codigoIBGE}")]
         public async Task<IActionResult> GetCompleteByIBGE(int codigoIBGE)
         {
             if (!ModelState.IsValid)
